@@ -1,5 +1,7 @@
 <?php
     require_once("DatabaseController.php");
+    require_once("StringMappingController.php");
+
 class BankController extends Globals{
 
     protected $conn;
@@ -8,17 +10,20 @@ class BankController extends Globals{
     public function __construct(){
         parent::__construct();
         $db = new DatabaseController();
+        $map = new StringMappingController();
         $this->db = $db;
         $this->conn = $db->conn;
     }
     
     function getAllBank(){
-        global $conn;
-
         $sql = "SELECT * FROM tbl_bank";
-        $result = $conn->query($sql);
+        $result = $this->conn->query($sql);
+        $data = array();
 
-        print_r($result);
+        while($row = $result->fetch_assoc()){
+            array_push($data, $row);
+        }
+        parent::message(true, '0000',"No error found",$data);
     }
 
     public function getBankByName($lang, $name){
@@ -41,5 +46,27 @@ class BankController extends Globals{
         }else{
             return $this->db->getError();
         }
+    }
+
+    public function getBank(){
+        $k = $this->db->escapeString($this->search);
+
+        if($k == "" || $k == null){
+            parent::message(true, '0000',"No Bank input");
+            exit;
+        }
+
+        $sql = "SELECT * FROM tbl_bank WHERE bank_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $data = array();
+
+        while($row = $result->fetch_assoc()){
+            array_push($data, $row);
+        }
+        parent::message(true, '0000',"No error found",$data);
     }
 }

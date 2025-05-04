@@ -3,7 +3,6 @@
     require_once("StringMappingController.php");
 
     class DistrictController extends Globals{
-        private $district;
         protected $conn;
         protected $db;
         protected $mapArray;
@@ -18,12 +17,14 @@
         }
 
         public function getAllDistrict(){
-            global $conn;
-
             $sql = "SELECT * FROM tbl_district";
-            $result = $conn->query($sql);
+            $result = $this->conn->query($sql);
+            $data = array();
 
-            print_r($result);
+            while($row = $result->fetch_assoc()){
+                array_push($data, $row);
+            }
+            parent::message(true, '0000',"No error found",$data);
         }
 
         public function getDistrictByName($lang, $name){
@@ -50,5 +51,27 @@
             }else{
                 return $this->db->getError();
             }
+        }
+
+        public function getDistrict(){
+            $k = $this->db->escapeString($this->search);
+    
+            if($k == "" || $k == null){
+                parent::message(true, '0000',"No District input");
+                exit;
+            }
+    
+            $sql = "SELECT * FROM tbl_district WHERE district_key = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("s", $k);
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+            $data = array();
+    
+            while($row = $result->fetch_assoc()){
+                array_push($data, $row);
+            }
+            parent::message(true, '0000',"No error found",$data);
         }
     }

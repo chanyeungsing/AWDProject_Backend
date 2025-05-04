@@ -1,8 +1,12 @@
 <?php
     require_once("DatabaseController.php");
+    require_once("StringMappingController.php");
+    
 class BranchController extends Globals{
     protected $conn;
     protected $db;
+    protected $lang;
+    protected $search;
 
     public function __construct(){
         parent::__construct();
@@ -13,12 +17,106 @@ class BranchController extends Globals{
     }
 
     public function getAllBranch(){
-        global $conn;
+        $sql = "SELECT 
+                b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                d.district_en, d.district_tc, d.district_sc, 
+                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` FROM tbl_branch br 
+                JOIN tbl_bank b ON br.bank_key = b.bank_key
+                JOIN tbl_district d ON br.district_key = d.district_key;";
+        $result = $this->conn->query($sql);
+        $data = array();
 
-        $sql = "SELECT * FROM tbl_branch";
-        $result = $conn->query($sql);
+        while($row = $result->fetch_assoc()){
+            array_push($data, $row);
+        }
+        parent::message(true, '0000',"No error found",$data);
+    }
 
-        print_r($result);
+    public function getBranchwithDistrictKey(){
+        $k = $this->db->escapeString($this->search);
+
+        if($k == "" || $k == null){
+            parent::message(true, '0000',"No District was input");
+            exit;
+        }
+
+        $sql = "SELECT 
+                b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                d.district_en, d.district_tc, d.district_sc, 
+                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
+                FROM tbl_branch br 
+                JOIN tbl_bank b ON br.bank_key = b.bank_key
+                JOIN tbl_district d ON br.district_key = d.district_key
+                WHERE br.district_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $data = array();
+
+        while($row = $result->fetch_assoc()){
+            array_push($data, $row);
+        }
+        parent::message(true, '0000',"No error found",$data);
+    }
+
+    public function getBranchwithBankKey(){
+        $k = $this->db->escapeString($this->search);
+
+        if($k == "" || $k == null){
+            parent::message(true, '0000',"No Bank was input");
+            exit;
+        }
+
+        $sql = "SELECT 
+                b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                d.district_en, d.district_tc, d.district_sc, 
+                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
+                FROM tbl_branch br 
+                JOIN tbl_bank b ON br.bank_key = b.bank_key
+                JOIN tbl_district d ON br.district_key = d.district_key
+                WHERE br.bank_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $data = array();
+
+        while($row = $result->fetch_assoc()){
+            array_push($data, $row);
+        }
+        parent::message(true, '0000',"No error found",$data);
+    }
+
+    public function getBranch(){
+        $k = $this->db->escapeString($this->search);
+
+        if($k == "" || $k == null){
+            parent::message(true, '0000',"No Branch key input");
+            exit;
+        }
+
+        $sql = "SELECT 
+                b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                d.district_en, d.district_tc, d.district_sc, 
+                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
+                FROM tbl_branch br 
+                JOIN tbl_bank b ON br.bank_key = b.bank_key
+                JOIN tbl_district d ON br.district_key = d.district_key
+                WHERE br.branch_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $data = array();
+
+        while($row = $result->fetch_assoc()){
+            array_push($data, $row);
+        }
+        parent::message(true, '0000',"No error found",$data);
     }
 
     public function addAllBranch($data){
@@ -31,7 +129,7 @@ class BranchController extends Globals{
             array_push( $values, "'".$this->db->escapeString($value)."'" );
         }
         $query .= "(".implode(',', $fields).") VALUES (".implode(',', $values).")";
-    
+
         if($this->conn->query($query)){
             return $this->conn->insert_id;
         }else{

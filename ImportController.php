@@ -8,6 +8,7 @@ class ImportController extends Globals{
     protected $url;
     protected $db;
     protected $conn;
+    protected $lang;
 
     public function __construct(){ 
         parent::__construct();
@@ -15,8 +16,8 @@ class ImportController extends Globals{
         $this->conn = $db->conn;
     }
 
-    public function importData($apiUrl, $lang){
-        $url = $apiUrl;
+    public function importData(){
+        $url = "https://api.hkma.gov.hk/public/bank-svf-info/banks-branch-locator?lang=".$this->lang;
 
         $result = file_get_contents($url);
         
@@ -38,18 +39,18 @@ class ImportController extends Globals{
                         case "district":
                             //District
                             $distrct = new DistrictController();
-                            $district_key = $distrct->getDistrictByName($lang, $r);
+                            $district_key = $distrct->getDistrictByName($this->lang, $r);
 
                             if($district_key == 0){
-                                $district_key = $distrct->addDistrict($r, $lang);
+                                $district_key = $distrct->addDistrict($r, $this->lang);
                             }
                             $branchData["district_key"] = $district_key;
                             break;
                         case "bank_name":
                             $bank = new BankController();
-                            $bank_key = $bank->getBankByName($lang, $r);
+                            $bank_key = $bank->getBankByName($this->lang, $r);
                             if($bank_key == 0){
-                                $bank_key = $bank->addBank($r, $lang);
+                                $bank_key = $bank->addBank($r, $this->lang);
                             }
                             $branchData["bank_key"] = $bank_key;
                             break;

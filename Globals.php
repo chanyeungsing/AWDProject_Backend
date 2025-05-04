@@ -2,8 +2,17 @@
 
 class Globals{
     protected $output;
+    protected $lang;
+    protected $controller;
+    protected $action;
+    protected $search;
+
     
     public function __construct(){ 
+        $this->lang = (isset($_REQUEST['lang'])? $_REQUEST['lang']:"en");
+        $this->controller = $_REQUEST["controller"];
+        $this->action = $_REQUEST["action"];
+        $this->search = (isset($_REQUEST['search'])? $_REQUEST['search']:null);
     }
 
     /**
@@ -15,17 +24,16 @@ class Globals{
         }
     }
  */
-    public function message($status, $code, $message){
-        global $output;
-
+    public function message($status, $code, $message, $result = "{}"){
         header('Content-Type: application/json; charset=utf-8');
         //setting the JSON header
         $header["success"] = $status;
         $header["err_code"] = $code;
         $header["err_msg"] = $message;
+        $header["result"] = $result;
 
-        $output["header"] = $header;
+        $this->output["header"] = $header;
         
-        echo json_encode($output);
+        echo json_encode($this->output);
     }
 }

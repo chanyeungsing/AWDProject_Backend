@@ -34,7 +34,10 @@ class DatabaseController extends Globals{
     }
 
     public function escapeString($str){
-        return $this->conn->real_escape_string($str);
+        if($str != "" || $str != null){
+            return $this->conn->real_escape_string($str);
+        }
+        return $str;
     }
 
 

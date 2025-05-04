@@ -3,19 +3,24 @@
 
     $globals = new Globals();
 
-    $lang = $_REQUEST['lang'];
+    $lang = (isset($_REQUEST['lang'])? $_REQUEST['lang']:"en");
     $controller = $_REQUEST["controller"];
-    //$action = $_REQUEST["action"];
-    //$data = $_REQUEST["data"];
+    $action = $_REQUEST["action"];
+    $search = (isset($_REQUEST['search'])? $_REQUEST['search']:null);
 
-    if($lang == ""){
-        $lang = "en";
-    }
 
     if($controller == ""){
         $status = false;
         $err_code = "404";
-        $err_msg = "Not Controller input";
+        $err_msg = "No Controller input";
+        $globals->message($status, $err_code, $err_msg);
+        exit;
+    }
+
+    if($action == ""){
+        $status = false;
+        $err_code = "404";
+        $err_msg = "No Action input";
         $globals->message($status, $err_code, $err_msg);
         exit;
     }
@@ -34,4 +39,5 @@
     require_once($fileName);
 
     $service = new $serviceName;
-    $service->importData("https://api.hkma.gov.hk/public/bank-svf-info/banks-branch-locator?lang=".$lang, $lang);
+
+    $service->$action();
