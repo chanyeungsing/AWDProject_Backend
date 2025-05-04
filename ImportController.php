@@ -17,7 +17,7 @@ class ImportController extends Globals{
     }
 
     public function importData(){
-        $url = "https://api.hkma.gov.hk/public/bank-svf-info/banks-branch-locator?lang=".$this->lang;
+        $url = "https://api.hkma.gov.hk/public/bank-svf-info/banks-branch-locator?pagesize=1000&lang=".$this->lang;
 
         $result = file_get_contents($url);
         
