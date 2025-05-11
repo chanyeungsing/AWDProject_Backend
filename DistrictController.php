@@ -6,15 +6,37 @@
         protected $conn;
         protected $db;
         protected $mapArray;
+        protected $district_key;
 
-        public function __construct(){
+        public function __construct($district_key = null){
             parent::__construct();
-            $db = new DatabaseController();
+
+            $this->db = new DatabaseController();
             $map = new StringMappingController();
-            $this->db = $db;
-            $this->conn = $db->conn;
+
+            $this->conn = $this->db->getConnection();
             $this->mapArray = $map->districtMapping;
+
+
+            $this->district_key = $district_key;
         }
+
+        public function handle_GET($param){
+            parse_str($param, $queryArray);
+
+            if($queryArray["key"] == ""){
+                $this->getAllDistrict();
+            }else{
+                $this->getDistrict($queryArray["key"]);
+            }
+        }
+
+        public function handle_POST($param){
+            parse_str($param, $queryArray);
+        }
+
+        public function handle_PUT(){}
+        public function handle_DELETE(){}
 
         public function getAllDistrict(){
             $sql = "SELECT * FROM tbl_district";
@@ -53,8 +75,7 @@
             }
         }
 
-        public function getDistrict(){
-            $k = $this->db->escapeString($this->search);
+        public function getDistrict($k){
     
             if($k == "" || $k == null){
                 parent::message(true, '0000',"No District input");

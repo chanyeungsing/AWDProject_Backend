@@ -1,17 +1,15 @@
 <?php
+header("Content-Type: application/json");
 
 class Globals{
     protected $output;
     protected $lang;
     protected $controller;
-    protected $action;
     protected $search;
 
-    
     public function __construct(){ 
         $this->lang = (isset($_REQUEST['lang'])? $_REQUEST['lang']:"en");
         $this->controller = $_REQUEST["controller"];
-        $this->action = $_REQUEST["action"];
         $this->search = (isset($_REQUEST['search'])? $_REQUEST['search']:null);
     }
 
@@ -23,9 +21,8 @@ class Globals{
             "err_msg": "Invalid input value: Parameter lang is missing or invalid input (en|tc|sc)"
         }
     }
- */
+    */
     public function message($status, $code, $message, $result = "{}"){
-        header('Content-Type: application/json; charset=utf-8');
         //setting the JSON header
         $header["success"] = $status;
         $header["err_code"] = $code;

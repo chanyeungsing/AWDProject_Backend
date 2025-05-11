@@ -13,7 +13,11 @@ class ImportController extends Globals{
     public function __construct(){ 
         parent::__construct();
         $db = new DatabaseController();
-        $this->conn = $db->conn;
+        $this->conn = $db->getConnection();
+    }
+
+    public function handle_POST(){
+        $this->importData();
     }
 
     public function importData(){

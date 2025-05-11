@@ -12,7 +12,17 @@ class BankController extends Globals{
         $db = new DatabaseController();
         $map = new StringMappingController();
         $this->db = $db;
-        $this->conn = $db->conn;
+        $this->conn = $db->getConnection();
+    }
+
+    public function handle_GET($param){
+        parse_str($param, $queryArray);
+
+        if($queryArray["key"] == ""){
+            $this->getAllBank();
+        }else{
+            $this->getBank($queryArray["key"]);
+        }
     }
     
     function getAllBank(){
@@ -48,8 +58,7 @@ class BankController extends Globals{
         }
     }
 
-    public function getBank(){
-        $k = $this->db->escapeString($this->search);
+    public function getBank($k){
 
         if($k == "" || $k == null){
             parent::message(true, '0000',"No Bank input");

@@ -13,7 +13,17 @@ class BranchController extends Globals{
         $db = new DatabaseController();
         $map = new StringMappingController();
         $this->db = $db;
-        $this->conn = $db->conn;
+        $this->conn = $db->getConnection();
+    }
+
+    public function handle_GET($param){
+        parse_str($param, $queryArray);
+
+        if($queryArray["key"] == ""){
+            $this->getAllBranch();
+        }else{
+            $this->getBranch($queryArray["key"]);
+        }
     }
 
     public function getAllBranch(){
@@ -61,8 +71,7 @@ class BranchController extends Globals{
         parent::message(true, '0000',"No error found",$data);
     }
 
-    public function getBranchwithBankKey(){
-        $k = $this->db->escapeString($this->search);
+    public function getBranchwithBankKey($k){
 
         if($k == "" || $k == null){
             parent::message(true, '0000',"No Bank was input");
@@ -90,8 +99,7 @@ class BranchController extends Globals{
         parent::message(true, '0000',"No error found",$data);
     }
 
-    public function getBranch(){
-        $k = $this->db->escapeString($this->search);
+    public function getBranch($k){
 
         if($k == "" || $k == null){
             parent::message(true, '0000',"No Branch key input");

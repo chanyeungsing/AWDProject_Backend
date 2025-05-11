@@ -5,10 +5,6 @@ class DatabaseController extends Globals{
 
     public function __construct(){ 
         parent::__construct();
-        $this->conn = $this->connection();
-    }
-
-    private function connection(){
 
         $username = 'awd';
         $password = 'xNT03nfFq7((VzLz';
@@ -26,7 +22,11 @@ class DatabaseController extends Globals{
             parent::message($status, $err_code, $err_msg);
             exit;
         }
-        return $conn;
+        $this->conn = $conn;
+    }
+
+    public function getConnection(){
+        return $this->conn;
     }
 
     public function getError(){
