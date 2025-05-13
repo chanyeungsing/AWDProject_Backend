@@ -22,6 +22,8 @@ Return the specific district
 
 
 # Output
+## Single result
+```
 {
     "header": {
         "success": true,
@@ -37,3 +39,48 @@ Return the specific district
         ]
     }
 }
+```
+
+## Multiple result
+```
+{
+    "header": {
+        "success": true,
+        "err_code": "0000",
+        "err_msg": "No error found",
+        "result": [
+            {
+                "bank_key": "1",
+                "bank_name_en": "Industrial and Commercial Bank of China (Asia) Limited",
+                "bank_name_tc": null,
+                "bank_name_sc": null
+            },
+            {
+                "bank_key": "2",
+                "bank_name_en": "Bank of  Communications (Hong Kong) Limited",
+                "bank_name_tc": null,
+                "bank_name_sc": null
+            },
+            {
+                "bank_key": "3",
+                "bank_name_en": "Standard Chartered Bank (Hong Kong) Limited",
+                "bank_name_tc": null,
+                "bank_name_sc": null
+            },
+            {
+                "bank_key": "4",
+                "bank_name_en": "Hang Seng Bank Limited",
+                "bank_name_tc": null,
+                "bank_name_sc": null
+            },
+            {
+                "bank_key": "5",
+                "bank_name_en": "The Hongkong and Shanghai Banking Corporation Limited",
+                "bank_name_tc": null,
+                "bank_name_sc": null
+            },
+            .....
+        ]
+    }
+}
+```
