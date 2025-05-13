@@ -19,3 +19,21 @@ Return the specific district
 - District
 - Bank
 - Branch
+
+
+# Output
+{
+    "header": {
+        "success": true,
+        "err_code": "0000",
+        "err_msg": "No error found",
+        "result": [
+            {
+                "district_key": 2,
+                "district_en": "Yau Tsim Mong",
+                "district_tc": null,
+                "district_sc": null
+            }
+        ]
+    }
+}
