@@ -47,7 +47,9 @@
     $action = "handle_".$method;
 
     if(method_exists($service, $action)){
-        $service->$action($param);
+        parse_str($param, $queryArray);
+        
+        $service->$action($queryArray);
     }else{
         $status = false;
         $err_code = "404";

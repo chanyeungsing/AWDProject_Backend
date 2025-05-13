@@ -24,8 +24,16 @@ class BankController extends Globals{
             $this->getBank($queryArray["key"]);
         }
     }
+
+    public function handle_POST($param){
+    }
+
+    public function handle_PUT(){}
+    public function handle_DELETE($param){
+        $this->deleteBank($param["key"]);
+    }
     
-    function getAllBank(){
+    private function getAllBank(){
         $sql = "SELECT * FROM tbl_bank";
         $result = $this->conn->query($sql);
         $data = array();
@@ -78,4 +86,6 @@ class BankController extends Globals{
         }
         parent::message(true, '0000',"No error found",$data);
     }
+
+    private function deleteBank($k){}
 }

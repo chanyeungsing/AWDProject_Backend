@@ -22,21 +22,21 @@
         }
 
         public function handle_GET($param){
-            parse_str($param, $queryArray);
 
-            if($queryArray["key"] == ""){
+            if($param["key"] == ""){
                 $this->getAllDistrict();
             }else{
-                $this->getDistrict($queryArray["key"]);
+                $this->getDistrict($param["key"]);
             }
         }
 
         public function handle_POST($param){
-            parse_str($param, $queryArray);
         }
 
         public function handle_PUT(){}
-        public function handle_DELETE(){}
+        public function handle_DELETE($param){
+            $this->deleteDistrict($param["key"]);
+        }
 
         public function getAllDistrict(){
             $sql = "SELECT * FROM tbl_district";
@@ -83,6 +83,26 @@
             }
     
             $sql = "SELECT * FROM tbl_district WHERE district_key = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("s", $k);
+            $stmt->execute();
+    
+            $result = $stmt->get_result();
+            $data = array();
+    
+            while($row = $result->fetch_assoc()){
+                array_push($data, $row);
+            }
+            parent::message(true, '0000',"No error found",$data);
+        }
+
+        public function deleteDistrict($k){
+            if($k == "" || $k == null){
+                parent::message(true, '0000',"No District input");
+                exit;
+            }
+    
+            $sql = "DELETE FROM tbl_district WHERE district_key = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("s", $k);
             $stmt->execute();

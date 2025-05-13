@@ -26,7 +26,15 @@ class BranchController extends Globals{
         }
     }
 
-    public function getAllBranch(){
+    public function handle_POST($param){
+    }
+
+    public function handle_PUT(){}
+    public function handle_DELETE($param){
+        $this->deleteBranch($param["key"]);
+    }
+
+    private function getAllBranch(){
         $sql = "SELECT 
                 b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
                 d.district_en, d.district_tc, d.district_sc, 
@@ -42,7 +50,7 @@ class BranchController extends Globals{
         parent::message(true, '0000',"No error found",$data);
     }
 
-    public function getBranchwithDistrictKey(){
+    private function getBranchwithDistrictKey(){
         $k = $this->db->escapeString($this->search);
 
         if($k == "" || $k == null){
@@ -99,7 +107,7 @@ class BranchController extends Globals{
         parent::message(true, '0000',"No error found",$data);
     }
 
-    public function getBranch($k){
+    private function getBranch($k){
 
         if($k == "" || $k == null){
             parent::message(true, '0000',"No Branch key input");
@@ -144,4 +152,6 @@ class BranchController extends Globals{
             return $this->db->getError();
         }
     }
+
+    private function deleteBranch($k){}
 }
