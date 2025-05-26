@@ -43,6 +43,11 @@
             $result = $this->conn->query($sql);
             $data = array();
 
+            if($result->num_rows == 0){
+                parent::message(true, '0000',"No record found",$data);
+                exit;
+            }
+
             while($row = $result->fetch_assoc()){
                 array_push($data, $row);
             }
@@ -89,6 +94,11 @@
     
             $result = $stmt->get_result();
             $data = array();
+
+            if($result->num_rows == 0){
+                parent::message(true, '0000',"No record found",$data);
+                exit;
+            }
     
             while($row = $result->fetch_assoc()){
                 array_push($data, $row);
@@ -101,18 +111,26 @@
                 parent::message(true, '0000',"No District input");
                 exit;
             }
+
+            $sql = "SELECT * FROM tbl_district WHERE district_key = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("s", $k);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if($result->num_rows == 0){
+                parent::message(false, '0000',"No record found",array());
+                exit;
+            }
     
             $sql = "DELETE FROM tbl_district WHERE district_key = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("s", $k);
-            $stmt->execute();
-    
-            $result = $stmt->get_result();
-            $data = array();
-    
-            while($row = $result->fetch_assoc()){
-                array_push($data, $row);
+            
+            if($stmt->execute()){
+                parent::message(true, '0000',"No error found",array());
+            }else{
+                parent::message(false, '0000',$stmt->error,array());
             }
-            parent::message(true, '0000',"No error found",$data);
+           
         }
     }

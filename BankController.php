@@ -16,12 +16,10 @@ class BankController extends Globals{
     }
 
     public function handle_GET($param){
-        parse_str($param, $queryArray);
-
-        if($queryArray["key"] == ""){
+        if($param["key"] == ""){
             $this->getAllBank();
         }else{
-            $this->getBank($queryArray["key"]);
+            $this->getBank($param["key"]);
         }
     }
 
@@ -81,11 +79,40 @@ class BankController extends Globals{
         $result = $stmt->get_result();
         $data = array();
 
+        if($result->num_rows == 0){
+            parent::message(true, '0000',"No record found",$data);
+            exit;
+        }
+
         while($row = $result->fetch_assoc()){
             array_push($data, $row);
         }
         parent::message(true, '0000',"No error found",$data);
     }
 
-    private function deleteBank($k){}
+    private function deleteBank($k){
+        if($k == "" || $k == null){
+            parent::message(true, '0000',"No Bank input");
+            exit;
+        }
+
+        $sql = "SELECT * FROM tbl_bank WHERE bank_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows == 0){
+            parent::message(false, '0000',"No record found",array());
+            exit;
+        }
+
+        $sql = "DELETE FROM tbl_bank WHERE bank_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        if($stmt->execute()){
+            parent::message(true, '0000',"No error found",array());
+        }else{
+            parent::message(false, '0000',$stmt->error,array());
+        }
+    }
 }

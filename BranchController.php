@@ -17,12 +17,10 @@ class BranchController extends Globals{
     }
 
     public function handle_GET($param){
-        parse_str($param, $queryArray);
-
-        if($queryArray["key"] == ""){
+        if($param["key"] == ""){
             $this->getAllBranch();
         }else{
-            $this->getBranch($queryArray["key"]);
+            $this->getBranch($param["key"]);
         }
     }
 
@@ -43,6 +41,11 @@ class BranchController extends Globals{
                 JOIN tbl_district d ON br.district_key = d.district_key;";
         $result = $this->conn->query($sql);
         $data = array();
+
+        if($result->num_rows == 0){
+            parent::message(true, '0000',"No record found",$data);
+            exit;
+        }
 
         while($row = $result->fetch_assoc()){
             array_push($data, $row);
@@ -73,6 +76,11 @@ class BranchController extends Globals{
         $result = $stmt->get_result();
         $data = array();
 
+        if($result->num_rows == 0){
+            parent::message(true, '0000',"No record found",$data);
+            exit;
+        }
+
         while($row = $result->fetch_assoc()){
             array_push($data, $row);
         }
@@ -100,6 +108,11 @@ class BranchController extends Globals{
 
         $result = $stmt->get_result();
         $data = array();
+
+        if($result->num_rows == 0){
+            parent::message(true, '0000',"No record found",$data);
+            exit;
+        }
 
         while($row = $result->fetch_assoc()){
             array_push($data, $row);
@@ -129,6 +142,11 @@ class BranchController extends Globals{
         $result = $stmt->get_result();
         $data = array();
 
+        if($result->num_rows == 0){
+            parent::message(true, '0000',"No record found",$data);
+            exit;
+        }
+
         while($row = $result->fetch_assoc()){
             array_push($data, $row);
         }
@@ -153,5 +171,29 @@ class BranchController extends Globals{
         }
     }
 
-    private function deleteBranch($k){}
+    private function deleteBranch($k){
+        if($k == "" || $k == null){
+            parent::message(true, '0000',"No Branch input");
+            exit;
+        }
+
+        $sql = "SELECT * FROM tbl_branch WHERE branch_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows == 0){
+            parent::message(false, '0000',"No record found",array());
+            exit;
+        }
+
+        $sql = "DELETE FROM tbl_branch WHERE branch_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        if($stmt->execute()){
+            parent::message(true, '0000',"No error found",array());
+        }else{
+            parent::message(false, '0000',$stmt->error,array());
+        }
+    }
 }
