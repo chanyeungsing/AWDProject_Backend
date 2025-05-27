@@ -19,6 +19,18 @@ Update Data with Key;
 
 [PUT] http://localhost/index.php?controller=(controller)&key=(key)
 
+
+Search By District:
+
+[GET] http://localhost:8888/awd/index.php?controller=branch&bank_key=(key)
+
+Search By Bank
+
+[GET] http://localhost:8888/awd/index.php?controller=branch&district_key=(key)
+
+Search by District and Back
+http://localhost:8888/awd/index.php?controller=branch&district_key=(key)&bank_key=(key)
+
 # Example:
 http://localhost:8888/awd/index.php?controller=district
 
