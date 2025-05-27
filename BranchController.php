@@ -27,7 +27,9 @@ class BranchController extends Globals{
     public function handle_POST($param){
     }
 
-    public function handle_PUT(){}
+    public function handle_PUT(){
+        $this->updateBranch();
+    }
     public function handle_DELETE($param){
         $this->deleteBranch($param["key"]);
     }
@@ -85,6 +87,7 @@ class BranchController extends Globals{
             array_push($data, $row);
         }
         parent::message(true, '0000',"No error found",$data);
+        $stmt->close();
     }
 
     public function getBranchwithBankKey($k){
@@ -118,6 +121,8 @@ class BranchController extends Globals{
             array_push($data, $row);
         }
         parent::message(true, '0000',"No error found",$data);
+
+        $stmt->close();
     }
 
     private function getBranch($k){
@@ -151,6 +156,8 @@ class BranchController extends Globals{
             array_push($data, $row);
         }
         parent::message(true, '0000',"No error found",$data);
+
+        $stmt->close();
     }
 
     public function addAllBranch($data){
@@ -169,6 +176,45 @@ class BranchController extends Globals{
         }else{
             return $this->db->getError();
         }
+    }
+
+    public function updateBranch(){
+        parse_str(file_get_contents('php://input'), $_PUT);
+
+        $fields = array();
+        $k = "";
+
+        foreach($_PUT as $key => $value){
+            if($key == 'key'){
+                $k = $value;
+            }else{
+                if($key == 'barrier_free_access'){
+                    $key = 'barrier-free_access';
+                }
+                array_push( $fields, "`".$key."` = '".$this->db->escapeString($value)."'" );
+            }
+        }
+
+        $sql = "SELECT * FROM tbl_branch WHERE branch_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows == 0){
+            parent::message(false, '0000',"No record found",array());
+            exit;
+        }
+
+        $sql = "UPDATE tbl_branch SET ".implode(',', $fields)." WHERE branch_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        
+        if($stmt->execute()){
+            parent::message(true, '0000',"No error found",array());
+        }else{
+            parent::message(false, '0000',$stmt->error,array());
+        }
+        $stmt->close();
     }
 
     private function deleteBranch($k){
@@ -195,5 +241,6 @@ class BranchController extends Globals{
         }else{
             parent::message(false, '0000',$stmt->error,array());
         }
+        $stmt->close();
     }
 }

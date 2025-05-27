@@ -1,8 +1,23 @@
 # API url:
 
+Get All Data:
+
 [GET] http://localhost/index.php?controller=(controller)
 
+
+Get data with key:
+
 [GET] http://localhost/index.php?controller=(controller)&key=(key)
+
+
+Delete date with Key:
+
+[DELETE] http://localhost/index.php?controller=(controller)&key=(key)
+
+
+Update Data with Key;
+
+[PUT] http://localhost/index.php?controller=(controller)&key=(key)
 
 # Example:
 http://localhost:8888/awd/index.php?controller=district

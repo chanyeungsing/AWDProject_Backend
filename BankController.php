@@ -26,7 +26,9 @@ class BankController extends Globals{
     public function handle_POST($param){
     }
 
-    public function handle_PUT(){}
+    public function handle_PUT(){
+        $this->updateBank();
+    }
     public function handle_DELETE($param){
         $this->deleteBank($param["key"]);
     }
@@ -88,6 +90,33 @@ class BankController extends Globals{
             array_push($data, $row);
         }
         parent::message(true, '0000',"No error found",$data);
+    }
+
+    public function updateBank(){
+        parse_str(file_get_contents('php://input'), $_PUT);
+        $k = $_PUT["key"];
+        $bank_name_en = $_PUT["bank_name_en"];
+
+        $sql = "SELECT * FROM tbl_bank WHERE bank_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("s", $k);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows == 0){
+            parent::message(false, '0000',"No record found",array());
+            exit;
+        }
+
+        $sql = "UPDATE tbl_bank SET bank_name_en = ? WHERE bank_key = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ss", $bank_name_en, $k);
+        
+        if($stmt->execute()){
+            parent::message(true, '0000',"No error found",array());
+        }else{
+            parent::message(false, '0000',$stmt->error,array());
+        }
+        $stmt->close();
     }
 
     private function deleteBank($k){
