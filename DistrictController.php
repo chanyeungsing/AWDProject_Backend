@@ -23,7 +23,7 @@
 
         public function handle_GET($param){
 
-            if($param["key"] == ""){
+            if(!array_key_exists("key",$param)){
                 $this->getAllDistrict();
             }else{
                 $this->getDistrict($param["key"]);
@@ -31,7 +31,7 @@
         }
 
         public function handle_POST($param){
-            
+            $this->addSingleDistrict();
         }
 
         public function handle_PUT(){
@@ -72,10 +72,26 @@
             }
         }
 
+        public function addSingleDistrict(){
+            $name = $_POST['district_name'];
+            $lang = "en";
+    
+            $sql = "INSERT INTO tbl_district (district_".$lang.") VALUES (?)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("s", $name);
+    
+            if($stmt->execute()){
+                parent::message(true, '0000',"No error found",array());
+            }else{
+                parent::message(false, '0000',$stmt->error,array());
+            }
+        }
+
         public function addDistrict($name, $lang){
             //Mapping the value
             $value = $this->mapArray[$name];
-            $sql = "INSERT INTO tbl_district (district_".$lang.") VALUES ('".$value."')";      
+            $sql = "INSERT INTO tbl_district (district_".$lang.") VALUES ('".$value."')";
+
             if($this->conn->query($sql)){
                 return $this->conn->insert_id;
             }else{

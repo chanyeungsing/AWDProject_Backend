@@ -17,7 +17,7 @@ class BranchController extends Globals{
     }
 
     public function handle_GET($param){
-        if($param["key"] == ""){
+        if(!array_key_exists("key",$param)){
             $this->getAllBranch();
         }else{
             $this->getBranch($param["key"]);
@@ -158,6 +158,16 @@ class BranchController extends Globals{
         parent::message(true, '0000',"No error found",$data);
 
         $stmt->close();
+    }
+
+    public function addBranch(){
+        $result = $this->addAllBranch($_POST);
+
+        if(is_int($result)){
+            parent::message(true, '0000',"No error found",array());
+        }else{
+            parent::message(false, '0000',$result,array());
+        }
     }
 
     public function addAllBranch($data){

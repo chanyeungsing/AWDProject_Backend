@@ -16,14 +16,15 @@ class BankController extends Globals{
     }
 
     public function handle_GET($param){
-        if($param["key"] == ""){
+        if(!array_key_exists("key",$param)){
             $this->getAllBank();
         }else{
             $this->getBank($param["key"]);
         }
     }
 
-    public function handle_POST($param){
+    public function handle_POST(){
+        $this->addSingleBank();
     }
 
     public function handle_PUT(){
@@ -54,6 +55,19 @@ class BankController extends Globals{
             return $row['bank_key'];
         }else{
             return 0;
+        }
+    }
+
+    public function addSingleBank(){
+        $name = $_POST['bank_name'];
+        $lang = "en";
+
+        $result = $this->addBank($name, $lang);
+
+        if(is_int($result)){
+            parent::message(true, '0000',"No error found",array());
+        }else{
+            parent::message(false, '0000',$result,array());
         }
     }
 
