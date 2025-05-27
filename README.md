@@ -15,18 +15,21 @@ Delete date with Key:
 [DELETE] http://localhost/index.php?controller=(controller)&key=(key)
 
 
-Update Data with Key;
+
+Update Data with Key:
 
 [PUT] http://localhost/index.php?controller=(controller)&key=(key)
 
 With form data
 
 
-Create new record
+Create new record:
 
 [POST] http://localhost/index.php?controller=(controller)
 
 With form data
+
+
 
 # Search
 
