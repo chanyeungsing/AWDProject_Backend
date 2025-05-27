@@ -28,8 +28,9 @@ Search By Bank
 
 [GET] http://localhost:8888/awd/index.php?controller=branch&district_key=(key)
 
-Search by District and Back
-http://localhost:8888/awd/index.php?controller=branch&district_key=(key)&bank_key=(key)
+Search by District and Bank
+
+[GET] http://localhost:8888/awd/index.php?controller=branch&district_key=(key)&bank_key=(key)
 
 # Example:
 http://localhost:8888/awd/index.php?controller=district
