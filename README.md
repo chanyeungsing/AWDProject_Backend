@@ -22,11 +22,11 @@ Update Data with Key;
 
 # Search
 
-Search By District:
+Search By Bank:
 
 [GET] http://localhost:8888/awd/index.php?controller=branch&bank_key=(key)
 
-Search By Bank
+Search By District
 
 [GET] http://localhost:8888/awd/index.php?controller=branch&district_key=(key)
 
