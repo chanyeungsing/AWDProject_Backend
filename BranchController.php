@@ -43,7 +43,7 @@ class BranchController extends Globals{
 
     private function getAllBranch(){
         $sql = "SELECT 
-                b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
                 d.district_en, d.district_tc, d.district_sc, 
                 br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
@@ -70,7 +70,7 @@ class BranchController extends Globals{
         }
 
         $sql = "SELECT 
-                b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
                 d.district_en, d.district_tc, d.district_sc, 
                 br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
                 FROM tbl_branch br 
@@ -104,7 +104,7 @@ class BranchController extends Globals{
         }
 
         $sql = "SELECT 
-                b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
                 d.district_en, d.district_tc, d.district_sc, 
                 br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
                 FROM tbl_branch br 
@@ -137,7 +137,7 @@ class BranchController extends Globals{
         $district_key = $param["district_key"];
 
         $sql = "SELECT 
-                b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
                 d.district_en, d.district_tc, d.district_sc, 
                 br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
                 FROM tbl_branch br 
@@ -173,7 +173,7 @@ class BranchController extends Globals{
         }
 
         $sql = "SELECT 
-                b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
                 d.district_en, d.district_tc, d.district_sc, 
                 br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
                 FROM tbl_branch br 
