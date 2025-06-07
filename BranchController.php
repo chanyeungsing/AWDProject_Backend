@@ -47,7 +47,8 @@ class BranchController extends Globals{
                 d.district_en, d.district_tc, d.district_sc, 
                 br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
-                JOIN tbl_district d ON br.district_key = d.district_key;";
+                JOIN tbl_district d ON br.district_key = d.district_key
+                ORDER BY br.branch_key;";
 
         $result = $this->conn->query($sql);
         $data = array();
@@ -76,7 +77,8 @@ class BranchController extends Globals{
                 FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
                 JOIN tbl_district d ON br.district_key = d.district_key
-                WHERE br.district_key = ?";
+                WHERE br.district_key = ?
+                ORDER BY br.branch_key;";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $k);
@@ -110,7 +112,8 @@ class BranchController extends Globals{
                 FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
                 JOIN tbl_district d ON br.district_key = d.district_key
-                WHERE br.bank_key = ?";
+                WHERE br.bank_key = ?
+                ORDER BY br.branch_key";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $k);
@@ -143,7 +146,8 @@ class BranchController extends Globals{
                 FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
                 JOIN tbl_district d ON br.district_key = d.district_key
-                WHERE br.bank_key = ? AND d.district_key = ?";
+                WHERE br.bank_key = ? AND d.district_key = ?
+                ORDER BY br.branch_key;";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ss", $bank_key, $district_key);
@@ -179,7 +183,8 @@ class BranchController extends Globals{
                 FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
                 JOIN tbl_district d ON br.district_key = d.district_key
-                WHERE br.branch_key = ?";
+                WHERE br.branch_key = ?
+                ORDER BY br.branch_key;";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $k);
         $stmt->execute();
@@ -244,7 +249,7 @@ class BranchController extends Globals{
         $k = "";
 
         foreach($_PUT as $key => $value){
-            if($key == 'key'){
+            if($key == 'branch_key'){
                 $k = $value;
             }else{
                 if($key == 'barrier_free_access'){
@@ -265,9 +270,10 @@ class BranchController extends Globals{
         }
 
         $sql = "UPDATE tbl_branch SET ".implode(',', $fields)." WHERE branch_key = ?";
+        echo $sql;
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $k);
-        
+
         if($stmt->execute()){
             parent::message(true, '0000',"No error found",array());
         }else{
