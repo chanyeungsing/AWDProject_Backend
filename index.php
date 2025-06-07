@@ -5,6 +5,10 @@
     //[GET] http://localhost/index.php?controller=(controller)&key=(key)
 
 
+	header("Access-Control-Allow-Origin: *");
+	header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+	header("Access-Control-Allow-Headers: Content-Type, Authorization");
+	
     $globals = new Globals();
 
     $lang = (isset($_REQUEST['lang'])? $_REQUEST['lang']:"en");

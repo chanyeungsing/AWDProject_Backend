@@ -43,9 +43,9 @@ class BranchController extends Globals{
 
     private function getAllBranch(){
         $sql = "SELECT 
-                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
-                d.district_en, d.district_tc, d.district_sc, 
-                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` FROM tbl_branch br 
+                br.branch_key, b.bank_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                d.district_key, d.district_en, d.district_tc, d.district_sc, 
+                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code`, br.is_active FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
                 JOIN tbl_district d ON br.district_key = d.district_key
                 ORDER BY br.branch_key;";
@@ -71,9 +71,9 @@ class BranchController extends Globals{
         }
 
         $sql = "SELECT 
-                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
-                d.district_en, d.district_tc, d.district_sc, 
-                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
+                br.branch_key, b.bank_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                d.district_key, d.district_en, d.district_tc, d.district_sc, 
+                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code`, br.is_active 
                 FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
                 JOIN tbl_district d ON br.district_key = d.district_key
@@ -106,9 +106,9 @@ class BranchController extends Globals{
         }
 
         $sql = "SELECT 
-                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
-                d.district_en, d.district_tc, d.district_sc, 
-                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
+                br.branch_key, b.bank_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                d.district_key, d.district_en, d.district_tc, d.district_sc, 
+                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code`, br.is_active 
                 FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
                 JOIN tbl_district d ON br.district_key = d.district_key
@@ -140,9 +140,9 @@ class BranchController extends Globals{
         $district_key = $param["district_key"];
 
         $sql = "SELECT 
-                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
-                d.district_en, d.district_tc, d.district_sc, 
-                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
+                br.branch_key, b.bank_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                d.district_key, d.district_en, d.district_tc, d.district_sc, 
+                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code`, br.is_active 
                 FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
                 JOIN tbl_district d ON br.district_key = d.district_key
@@ -177,9 +177,9 @@ class BranchController extends Globals{
         }
 
         $sql = "SELECT 
-                br.branch_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
-                d.district_en, d.district_tc, d.district_sc, 
-                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code` 
+                br.branch_key, b.bank_key, b.bank_name_en, b.bank_name_tc, b.bank_name_sc, 
+                d.district_key, d.district_en, d.district_tc, d.district_sc, 
+                br.branch_name, br.address, br.service_hours, br.latitude, br.longitude, br.`barrier-free_access`, br.`barrier-free_access_code`, br.is_active 
                 FROM tbl_branch br 
                 JOIN tbl_bank b ON br.bank_key = b.bank_key
                 JOIN tbl_district d ON br.district_key = d.district_key
@@ -206,6 +206,8 @@ class BranchController extends Globals{
     }
 
     public function addBranch(){
+        parse_str(file_get_contents('php://input'), $_POST);
+		
         $data = array();
 
         foreach($_POST as $k=>$v){
